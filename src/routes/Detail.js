@@ -22,7 +22,7 @@ const GET_MOVIE = gql`
 const Container = styled.div`
 	background-image: linear-gradient(-45deg, #d754ab, #fb723a);
 	width: 100%;
-	height: 150vh;
+	height: 120vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -50,22 +50,27 @@ const Description = styled.p`
 `;
 
 const Poster = styled.div`
-	width: 30%;
+	width: 300px;
 	background-image: url(${(props) => props.bg});
 	background-size: cover;
 	background-position: center center;
-	height: 60%;
+	height: 450px;
 `;
 
 const Row = styled.div`
 	width: 100%;
-	height: 90%;
+	height: 50%;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 `;
 const Suggestions = styled.div`
-	margin-top: 20px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+const Movies = styled.div`
 	width: 80%;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -90,11 +95,13 @@ const Detail = () => {
 				</Column>
 				<Poster bg={data?.movie.medium_cover_image} />
 			</Row>
-			<SubTitle>Suggestions</SubTitle>
 			<Suggestions>
-				{data?.suggestions?.map((suggestion) => (
-					<Movie key={suggestion.id} {...suggestion}></Movie>
-				))}
+				<SubTitle>Suggestions</SubTitle>
+				<Movies>
+					{data?.suggestions?.map((suggestion) => (
+						<Movie key={suggestion.id} {...suggestion}></Movie>
+					))}
+				</Movies>
 			</Suggestions>
 		</Container>
 	);

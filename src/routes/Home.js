@@ -7,8 +7,8 @@ const GET_MOVIES = gql`
 	query {
 		movies {
 			id
-			title
 			medium_cover_image
+			isLiked @client
 		}
 	}
 `;

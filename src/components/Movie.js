@@ -18,12 +18,13 @@ const Poster = styled.div`
 	background-position: center center;
 `;
 
-const Movie = ({ id, medium_cover_image }) => {
+const Movie = ({ id, medium_cover_image, isLiked }) => {
 	return (
 		<Container>
 			<Link to={`/${id}`}>
 				<Poster bg={medium_cover_image} />
 			</Link>
+			<button>{isLiked ? "UnLike" : "Like"}</button>
 		</Container>
 	);
 };

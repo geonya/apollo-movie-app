@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Movie from "../components/Movie";
 
 const GET_MOVIE = gql`
 	query getMovieById($id: Int!) {
@@ -11,17 +12,23 @@ const GET_MOVIE = gql`
 			language
 			medium_cover_image
 		}
+		suggestions(id: $id) {
+			id
+			medium_cover_image
+		}
 	}
 `;
 
 const Container = styled.div`
 	background-image: linear-gradient(-45deg, #d754ab, #fb723a);
 	width: 100%;
-	height: 100vh;
+	height: 150vh;
 	display: flex;
-	justify-content: space-around;
+	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
 	color: #ffffff;
+	padding-bottom: 100px;
 `;
 
 const Column = styled.div`
@@ -50,25 +57,45 @@ const Poster = styled.div`
 	height: 60%;
 `;
 
+const Row = styled.div`
+	width: 100%;
+	height: 90%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+`;
+const Suggestions = styled.div`
+	margin-top: 20px;
+	width: 80%;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 30px;
+`;
+
 const Detail = () => {
 	const { id } = useParams();
 
 	const { loading, data } = useQuery(GET_MOVIE, {
 		variables: { id: +id },
 	});
-
 	return (
 		<Container>
-			<Column>
-				<Title>{loading ? "Loading..." : data.movie.title}</Title>
-				{data && (
+			<Row>
+				<Column>
+					<Title>{loading ? "Loading..." : data.movie.title}</Title>
 					<SubTitle>
-						{data?.movie.language} · {data?.movie.rating}
+						{data?.movie?.language} · {data?.movie?.rating}
 					</SubTitle>
-				)}
-				<Description>{data?.movie.description_intro}</Description>
-			</Column>
-			<Poster bg={data?.movie.medium_cover_image} />
+					<Description>{data?.movie.description_intro}</Description>
+				</Column>
+				<Poster bg={data?.movie.medium_cover_image} />
+			</Row>
+			<SubTitle>Suggestions</SubTitle>
+			<Suggestions>
+				{data?.suggestions?.map((suggestion) => (
+					<Movie key={suggestion.id} {...suggestion}></Movie>
+				))}
+			</Suggestions>
 		</Container>
 	);
 };

@@ -65,10 +65,11 @@ const Home = () => {
 				<Title>Apollo Movies</Title>
 				<SubTitle>I Love GraphQL</SubTitle>
 			</Header>
-			{loading && <Loading>Loading</Loading>}
-			{!loading && data.movies && (
+			{loading ? (
+				<Loading>Loading</Loading>
+			) : (
 				<Movies>
-					{data.movies.map((movie) => (
+					{data?.movies?.map((movie) => (
 						<Movie key={movie.id} {...movie} />
 					))}
 				</Movies>
